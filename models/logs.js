@@ -30,7 +30,7 @@ module.exports = class Log {
       });
     });
   }
-  static fetchContacts(callBack) {
+  static fetchLogs(callBack) {
     fs.readFile(pathToFile, (error, fileContent) => {
       if (error) {
         callBack([]);

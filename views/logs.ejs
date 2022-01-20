@@ -3,9 +3,12 @@
   <div class="container">
     <i class="fas fa-key fa-6x"></i>
     <h1 class="display-3">Logs</h1>
- <p id="log"><%= new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getSeconds() + " " + new Date().toLocaleDateString(); %></p>
+    <p id="log">
+      <% for(let i = 0; i < myLog.length; i++) { %>
+          <p><%= myLog[i].log%></p>
+      <% } %>
+    </p>
     <hr />
-   
     <a href="/logout" class="btn btn-light btn-lg" role="button">Log Out</a>
   </div>
 </div>

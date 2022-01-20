@@ -1,5 +1,5 @@
-const passport = require('passport');
-const User = require('../models/user');
+const passport = require("passport");
+const User = require("../models/user");
 
 const Log = require("../models/logs");
 let logList = [];
@@ -22,7 +22,6 @@ exports.postRegister = (req, res) => {
         res.redirect("/register");
       } else {
         passport.authenticate("local")(req, res, () => {
-          //res.send("You have discovered my secret");
           res.render("logs");
         });
       }
@@ -46,7 +45,6 @@ exports.postLogin = (req, res) => {
       res.redirect("/login");
     } else {
       passport.authenticate("local")(req, res, () => {
-        //res.send("You have discovered my secret");
         res.redirect("/logs");
       });
     }
@@ -54,33 +52,27 @@ exports.postLogin = (req, res) => {
 };
 
 exports.getLogsPage = (req, res) => {
- 
-  
   if (req.isAuthenticated()) {
-    User.find({ userSecret: { $ne: null } }, (error, usersFound) => {
+    User.find({ userLog: { $ne: null } }, (error, usersFound) => {
       if (error) {
         console.log(error);
       } else {
         console.log(usersFound);
-        // var logTime = new Date();
-        // res.send(logTime);
-        res.render("logs");
-          //, { usersSecrets: usersFound });
+        var logTime = new Date().toUTCString();
+        let newLog = new Log(logTime);
+        newLog.saveLog();
+
+        Log.fetchLogs((logs) => {
+          console.log(logs);
+          res.render("logs.ejs", { myLog: logs });
+        });
+
       }
     });
   } else {
-    //  var date = new Date("hh/mm/ss/dd/MM/yy");
-    //  // var currentTime = date.toISOString().substring(11, 16);
-
-    //  document.getElementById("log").value = date;
-
-      // let userLog = req.body.log;
-      // let newLog = new Log(userLog);
-      // newLog.saveLog();
     res.redirect("/login");
   }
 };
-
 
 exports.userLogout = (req, res) => {
   req.logout();
